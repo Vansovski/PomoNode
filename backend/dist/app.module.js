@@ -9,15 +9,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
-const app_service_1 = require("./app.service");
+const typeorm_1 = require("@nestjs/typeorm");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
+        imports: [
+            typeorm_1.TypeOrmModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: (configService) => ({
+                    type: 'mariadb',
+                    host: configService.get('DB_HOST', 'localhost'),
+                    port: Number(configService.get('DB_PORT', 3306)),
+                    username: configService.get('DB_USERNAME', 'root'),
+                    password: configService.get('DB_PASSWORD', '123'),
+                    database: configService.get('DB_DATABASE', 'todo'),
+                    entities: [],
+                    synchronize: true,
+                }),
+            }),
+        ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
