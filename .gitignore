@@ -54,3 +54,4 @@ pnpm-lock.yaml
 /.history
 
 .env
+dist/

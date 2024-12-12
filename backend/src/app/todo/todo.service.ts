@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TodoEntity } from './entities/todo.entity';
 import { Repository } from 'typeorm';
+import { TodoRequest } from './dtos/todo.request.dto';
 
 @Injectable()
 export class TodoService {
@@ -23,11 +24,11 @@ export class TodoService {
       );
     }
   }
-  async create(data) {
+  async create(data: TodoRequest) {
     return await this.todoRepository.save(this.todoRepository.create(data));
   }
 
-  async update(id: string, data) {
+  async update(id: string, data: TodoRequest) {
     const todo = await this.findOne(id);
     this.todoRepository.merge(todo, data);
 
